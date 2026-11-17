@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – PlacePrep AI</title>
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="app-sidebar" id="sidebar">
+      <div class="sidebar-header d-flex align-items-center justify-content-between">
+        <a href="/index.html" class="text-decoration-none text-white fs-4 fw-bold">
+          <i class="bi bi-cpu-fill text-primary"></i> PlacePrep <span class="text-primary">AI</span>
+        </a>
+        <button class="btn btn-sm btn-link text-white d-lg-none" id="closeSidebar">
+          <i class="bi bi-x-lg fs-5"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li><a href="/dashboard.html"><i class="bi bi-grid-1x2-fill"></i> Student Dashboard</a></li>
+        <li><a href="/admin.html" class="active"><i class="bi bi-shield-lock"></i> Admin Panel</a></li>
+        <li><a href="/coding.html"><i class="bi bi-code-slash"></i> Coding Tracker</a></li>
+        <li><a href="/companies.html"><i class="bi bi-building"></i> Companies</a></li>
+        <li class="mt-4 border-top border-secondary pt-2">
+          <a href="#" id="logoutBtn" class="text-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </li>
+      </ul>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="app-content">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-outline-secondary d-lg-none" id="toggleSidebar">
+            <i class="bi bi-list"></i>
+          </button>
+          <h4 class="fw-bold text-navy mb-0"><i class="bi bi-shield-check text-primary me-2"></i>Platform Admin Management</h4>
+        </div>
+        <span class="badge bg-danger fs-6 px-3 py-2">ADMIN ROLE</span>
+      </header>
+
+      <main class="main-body">
+        <!-- Admin Platform Statistics -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="stat-card">
+              <span class="text-muted small fw-medium">Total Registered Students</span>
+              <h3 class="fw-bold text-navy mt-1 mb-0" id="statAdminStudents">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card">
+              <span class="text-muted small fw-medium">Total Companies</span>
+              <h3 class="fw-bold text-primary mt-1 mb-0" id="statAdminCompanies">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card">
+              <span class="text-muted small fw-medium">Total Practice Questions</span>
+              <h3 class="fw-bold text-success mt-1 mb-0" id="statAdminQuestions">0</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-card">
+              <span class="text-muted small fw-medium">Mock Interviews Conducted</span>
+              <h3 class="fw-bold text-warning mt-1 mb-0" id="statAdminInterviews">0</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Management Nav Tabs -->
+        <div class="stat-card p-4">
+          <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active fw-semibold" id="students-tab" data-bs-toggle="tab" data-bs-target="#tabStudents"><i class="bi bi-people me-1"></i> Registered Students</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-semibold" id="companies-tab" data-bs-toggle="tab" data-bs-target="#tabCompanies"><i class="bi bi-building me-1"></i> Companies CRUD</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-semibold" id="coding-tab" data-bs-toggle="tab" data-bs-target="#tabCoding"><i class="bi bi-code-slash me-1"></i> Add Coding Question</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-semibold" id="aptitude-tab" data-bs-toggle="tab" data-bs-target="#tabAptitude"><i class="bi bi-calculator me-1"></i> Add Aptitude Question</button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="adminTabsContent">
+            <!-- 1. Registered Students List -->
+            <div class="tab-pane fade show active" id="tabStudents">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>College</th>
+                      <th>Degree / Branch</th>
+                      <th>Graduation Year</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentsTableBody">
+                    <tr><td colspan="5" class="text-center text-muted py-4">Loading student records...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 2. Add Company Form -->
+            <div class="tab-pane fade" id="tabCompanies">
+              <div class="max-w-700">
+                <h5 class="fw-bold text-navy mb-3">Add New Company</h5>
+                <form id="addCompanyForm">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Company Name *</label>
+                      <input type="text" class="form-control" id="compName" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Category</label>
+                      <select class="form-select" id="compCategory">
+                        <option value="Product">Product</option>
+                        <option value="Service">Service</option>
+                        <option value="Consulting">Consulting</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">CTC Range</label>
+                      <input type="text" class="form-control" id="compPackage" placeholder="e.g. 10 - 20 LPA" />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Logo URL</label>
+                      <input type="url" class="form-control" id="compLogo" placeholder="https://..." />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label fw-semibold">Company Description *</label>
+                      <textarea class="form-control" id="compDesc" rows="3" required></textarea>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label fw-semibold">Required Tech Stack Skills (Comma separated)</label>
+                      <input type="text" class="form-control" id="compSkills" placeholder="e.g. Java, Python, System Design" />
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary-custom mt-3">Add Company</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- 3. Add Coding Question Form -->
+            <div class="tab-pane fade" id="tabCoding">
+              <div class="max-w-700">
+                <h5 class="fw-bold text-navy mb-3">Add Coding Question</h5>
+                <form id="addCodingForm">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Problem Title *</label>
+                      <input type="text" class="form-control" id="codeTitle" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Topic *</label>
+                      <select class="form-select" id="codeTopic" required>
+                        <option value="Arrays">Arrays</option>
+                        <option value="Strings">Strings</option>
+                        <option value="Linked Lists">Linked Lists</option>
+                        <option value="Stack">Stack</option>
+                        <option value="Queue">Queue</option>
+                        <option value="Trees">Trees</option>
+                        <option value="Graphs">Graphs</option>
+                        <option value="Recursion">Recursion</option>
+                        <option value="Dynamic Programming">Dynamic Programming</option>
+                        <option value="Searching">Searching</option>
+                        <option value="Sorting">Sorting</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Difficulty *</label>
+                      <select class="form-select" id="codeDiff" required>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Target Company</label>
+                      <input type="text" class="form-control" id="codeCompany" placeholder="e.g. Google, Amazon, All" />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label fw-semibold">External Problem Link</label>
+                      <input type="url" class="form-control" id="codeLink" placeholder="https://leetcode.com/problems/..." />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label fw-semibold">Description</label>
+                      <textarea class="form-control" id="codeDesc" rows="3"></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary-custom mt-3">Add Coding Question</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- 4. Add Aptitude Question Form -->
+            <div class="tab-pane fade" id="tabAptitude">
+              <div class="max-w-700">
+                <h5 class="fw-bold text-navy mb-3">Add Aptitude Question</h5>
+                <form id="addAptitudeForm">
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label class="form-label fw-semibold">Question Text *</label>
+                      <textarea class="form-control" id="aptQuestion" rows="2" required></textarea>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Category *</label>
+                      <select class="form-select" id="aptCategory" required>
+                        <option value="Quantitative Aptitude">Quantitative Aptitude</option>
+                        <option value="Logical Reasoning">Logical Reasoning</option>
+                        <option value="Verbal Ability">Verbal Ability</option>
+                        <option value="Data Interpretation">Data Interpretation</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Correct Option Index *</label>
+                      <select class="form-select" id="aptCorrect" required>
+                        <option value="0">Option A (Index 0)</option>
+                        <option value="1">Option B (Index 1)</option>
+                        <option value="2">Option C (Index 2)</option>
+                        <option value="3">Option D (Index 3)</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Option A *</label>
+                      <input type="text" class="form-control" id="aptOpt0" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Option B *</label>
+                      <input type="text" class="form-control" id="aptOpt1" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Option C *</label>
+                      <input type="text" class="form-control" id="aptOpt2" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold">Option D *</label>
+                      <input type="text" class="form-control" id="aptOpt3" required />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label fw-semibold">Explanation</label>
+                      <textarea class="form-control" id="aptExplanation" rows="2"></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary-custom mt-3">Add Aptitude Question</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Assistant – PlacePrep AI</title>
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="app-sidebar" id="sidebar">
+      <div class="sidebar-header d-flex align-items-center justify-content-between">
+        <a href="/index.html" class="text-decoration-none text-white fs-4 fw-bold">
+          <i class="bi bi-cpu-fill text-primary"></i> PlacePrep <span class="text-primary">AI</span>
+        </a>
+        <button class="btn btn-sm btn-link text-white d-lg-none" id="closeSidebar">
+          <i class="bi bi-x-lg fs-5"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li><a href="/dashboard.html"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
+        <li><a href="/coding.html"><i class="bi bi-code-slash"></i> Coding Tracker</a></li>
+        <li><a href="/companies.html"><i class="bi bi-building"></i> Companies</a></li>
+        <li><a href="/resume.html"><i class="bi bi-file-earmark-person"></i> Resume Analyzer</a></li>
+        <li><a href="/interview.html"><i class="bi bi-chat-quote"></i> AI Interview</a></li>
+        <li><a href="/aptitude.html"><i class="bi bi-calculator"></i> Aptitude</a></li>
+        <li><a href="/assistant.html" class="active"><i class="bi bi-robot"></i> AI Assistant</a></li>
+        <li><a href="/analytics.html"><i class="bi bi-bar-chart-line"></i> Analytics</a></li>
+        <li><a href="/profile.html"><i class="bi bi-person-circle"></i> Profile</a></li>
+        <li class="nav-admin-only" style="display: none;"><a href="/admin.html"><i class="bi bi-shield-lock"></i> Admin Panel</a></li>
+        <li class="mt-4 border-top border-secondary pt-2">
+          <a href="#" id="logoutBtn" class="text-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </li>
+      </ul>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="app-content">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-outline-secondary d-lg-none" id="toggleSidebar">
+            <i class="bi bi-list"></i>
+          </button>
+          <h4 class="fw-bold text-navy mb-0"><i class="bi bi-robot text-primary me-2"></i>PlacePrep AI Assistant</h4>
+        </div>
+        <button class="btn btn-sm btn-outline-secondary" id="clearChatBtn">
+          <i class="bi bi-trash me-1"></i> Clear Conversation
+        </button>
+      </header>
+
+      <main class="main-body">
+        <div class="stat-card p-4 max-w-900 mx-auto">
+          <!-- Chat Messages Box -->
+          <div class="chat-box mb-3" id="chatBox">
+            <!-- Initial AI welcome message -->
+            <div class="chat-message ai">
+              <div class="avatar bg-primary text-white rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                <i class="bi bi-robot"></i>
+              </div>
+              <div class="chat-bubble">
+                <strong>PlacePrep AI Mentor:</strong><br />
+                Hello! I am your AI placement mentor. Ask me anything about Data Structures & Algorithms, DBMS, Operating Systems, Computer Networks, OOP, or placement interview strategies!
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading Indicator -->
+          <div id="loadingIndicator" class="d-none text-muted small ms-5 mb-3">
+            <span class="spinner-border spinner-border-sm me-2 text-primary" role="status"></span>
+            PlacePrep AI is thinking...
+          </div>
+
+          <!-- Quick Question Suggestions -->
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="btn btn-sm btn-light border suggest-btn">What is normalization in DBMS?</button>
+            <button class="btn btn-sm btn-light border suggest-btn">Difference between process and thread?</button>
+            <button class="btn btn-sm btn-light border suggest-btn">How to prepare DSA for Google?</button>
+          </div>
+
+          <!-- Chat Input Form -->
+          <form id="chatForm" class="d-flex gap-2">
+            <input type="text" class="form-control py-3" id="userMessage" placeholder="Ask a technical or placement question..." required />
+            <button type="submit" class="btn btn-primary-custom px-4" id="sendBtn">
+              <i class="bi bi-send-fill fs-5"></i>
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/assistant.js"></script>
+</body>
+</html>

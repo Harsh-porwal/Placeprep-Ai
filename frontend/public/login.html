@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Login – PlacePrep AI</title>
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="/css/style.css" rel="stylesheet" />
+</head>
+<body class="bg-slate min-vh-100 d-flex flex-column justify-content-between py-4">
+
+  <!-- Header -->
+  <div class="container text-center mb-3">
+    <a href="/index.html" class="text-decoration-none d-inline-flex align-items-center gap-2 fs-3 fw-bold text-navy">
+      <i class="bi bi-cpu-fill text-primary"></i> PlacePrep <span class="text-primary">AI</span>
+    </a>
+  </div>
+
+  <!-- Login Card -->
+  <div class="container max-w-500">
+    <div class="stat-card p-4 p-md-5 bg-white rounded-4 shadow border">
+      <div class="text-center mb-4">
+        <h2 class="fw-extrabold text-navy">Welcome Back</h2>
+        <p class="text-muted">Sign in to access your placement preparation dashboard.</p>
+      </div>
+
+      <div id="alertBox" class="alert alert-danger d-none" role="alert"></div>
+
+      <form id="loginForm">
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label fw-semibold">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <input type="email" class="form-control" id="email" placeholder="student@placeprep.ai" required />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="password" class="form-label fw-semibold mb-0">Password</label>
+            <a href="#" id="forgotPasswordBtn" class="text-decoration-none small text-primary fw-medium">Forgot Password?</a>
+          </div>
+          <div class="input-group mt-1">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="password" placeholder="Enter your password" required />
+            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+              <i class="bi bi-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" id="rememberMe" checked />
+          <label class="form-check-label text-muted small" for="rememberMe">
+            Remember me on this device
+          </label>
+        </div>
+
+        <div>
+          <button type="submit" id="submitBtn" class="btn btn-primary-custom w-100 py-3 font-semibold shadow-sm">
+            <span id="btnText"><i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Portal</span>
+            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Quick Demo Login Helpers -->
+      <div class="mt-4 pt-3 border-top">
+        <p class="text-muted small fw-semibold text-center mb-2">Quick Demo Accounts:</p>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-sm btn-outline-primary flex-fill" id="fillStudentDemo">
+            <i class="bi bi-person me-1"></i> Demo Student
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-dark flex-fill" id="fillAdminDemo">
+            <i class="bi bi-shield-lock me-1"></i> Demo Admin
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-muted mb-0">Don't have an account? <a href="/register.html" class="text-primary fw-semibold">Register Student Account</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-muted small mt-4">
+    &copy; 2026 PlacePrep AI Portal
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="forgotModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted small">Enter your registered email address below. We will send a password reset link to your inbox.</p>
+          <input type="email" class="form-control" id="resetEmail" placeholder="student@placeprep.ai" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary-custom" id="sendResetBtn">Send Reset Link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (Auth.isLoggedIn()) {
+        window.location.href = '/dashboard.html';
+      }
+
+      const form = document.getElementById('loginForm');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const togglePassword = document.getElementById('togglePassword');
+      const eyeIcon = document.getElementById('eyeIcon');
+      const alertBox = document.getElementById('alertBox');
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const btnSpinner = document.getElementById('btnSpinner');
+
+      // Toggle Password Visibility
+      togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        eyeIcon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+      });
+
+      // Fill Demo Credentials
+      document.getElementById('fillStudentDemo').addEventListener('click', () => {
+        emailInput.value = 'student@placeprep.ai';
+        passwordInput.value = 'Student@123';
+      });
+
+      document.getElementById('fillAdminDemo').addEventListener('click', () => {
+        emailInput.value = 'admin@placeprep.ai';
+        passwordInput.value = 'Admin@123';
+      });
+
+      // Forgot password modal
+      const forgotModal = new bootstrap.Modal(document.getElementById('forgotModal'));
+      document.getElementById('forgotPasswordBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        forgotModal.show();
+      });
+      document.getElementById('sendResetBtn').addEventListener('click', () => {
+        alert('If your email is registered, a reset link has been sent to your inbox.');
+        forgotModal.hide();
+      });
+
+      // Form Submit
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        alertBox.classList.add('d-none');
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        submitBtn.disabled = true;
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+
+        try {
+          const res = await API.post('/api/auth/login', { email, password });
+
+          if (res.success) {
+            Auth.setAuth(res.token, res.user);
+            if (res.user.role === 'admin') {
+              window.location.href = '/admin.html';
+            } else {
+              window.location.href = '/dashboard.html';
+            }
+          } else {
+            alertBox.textContent = res.message || 'Invalid email or password.';
+            alertBox.classList.remove('d-none');
+          }
+        } catch (err) {
+          alertBox.textContent = err.message || 'Invalid credentials or server error.';
+          alertBox.classList.remove('d-none');
+        } finally {
+          submitBtn.disabled = false;
+          btnText.classList.remove('d-none');
+          btnSpinner.classList.add('d-none');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

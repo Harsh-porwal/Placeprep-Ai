@@ -1,0 +1,17 @@
+{
+  "name": "placeprep-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PlacePrep AI placement preparation portal",
+  "workspaces": [
+    "backend"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "npm --workspace=backend run dev",
+    "start": "npm --workspace=backend run start",
+    "seed": "npm --workspace=backend run seed"
+  }
+}
